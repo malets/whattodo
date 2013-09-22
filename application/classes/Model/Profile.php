@@ -44,5 +44,20 @@ class Model_Profile extends Model
              
          
     }
+    
+    public function get_profile($userID){
+        $profileQ = DB::select()
+                ->from($this->_tableUserInfo)
+                ->where('userID', '=', $userID)
+                ->execute();
+        
+        $result = $profileQ->as_array();
+        
+        if($result)
+            return $result[0];
+        else
+            return false;
+        
+    }
 }
 ?>

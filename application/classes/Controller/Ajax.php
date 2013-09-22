@@ -49,7 +49,13 @@ class Controller_Ajax extends Controller_CommonAuthorized {
                 $infoArray['birthDate'] = $this->request->post('userBirthdate');
                 $infoArray['City'] = $this->request->post('userCity');
                 
-                Model::factory($this->profileModel)->edit_profile($infoArray);
+                $result = Model::factory($this->profileModel)->edit_profile($infoArray);
+                
+                if($result)                
+                    $this->template->answer = '{"success": true}';
+                else
+                    $this->template->answer = '{"success": false, "errorMsg": "Не удалось отредактировать профиль"}';
+       
         }
 
 }

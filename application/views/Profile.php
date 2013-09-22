@@ -1,7 +1,5 @@
 <?php echo $header; ?>
-
-<div class='user_name'>
-Анна Ильюшина</div>
+<div class='user_name'><?php echo $profileValues['Name'] ?></div>
 
 <div style='margin-top: 10px; font-family: Calibri;'>
 <div style="overflow: hidden">
@@ -12,9 +10,9 @@
 <div style="margin-left: 10px">
 <table>
 <tbody><tr><td width="150"><b>Возраст</b></td>
-<td>25</td></tr>
+<td><?php echo $profileValues['Age'] ?></td></tr>
 <tr><td><b>Город</b></td>
-<td>Москва</td></tr>
+<td><?php echo $profileValues['City'] ?></td></tr>
 </tbody></table>
 </div>
 </div>
@@ -76,9 +74,9 @@ endforeach;?>
 </div>
 
 <div id="editProfileDiv">
-     Имя <input type='text' id="userName"/>
-     Дата рождения <input type='text' id="userBirthdate"/>
-     Город <input type='text' id="userCity"/>
+     Имя <input type='text' id="userName" value="<?php echo $profileValues['Name']?>"/>
+     Дата рождения <input type='date' id="userBirthdate" value="<?php echo $profileValues['Birthdate']?>"/>
+     Город <input type='text' id="userCity" value="<?php echo $profileValues['City']?>"/>
 </div>
 
 <script type="text/javascript">
@@ -217,7 +215,14 @@ endforeach;?>
                                         }
                                     }
                                 )
-               })
+               });
+               
+               
+                $(function() {
+                    $( "#userBirthdate" ).datepicker({
+                        dateFormat: 'yy-mm-dd'
+                    });
+                });
                
                 
     
