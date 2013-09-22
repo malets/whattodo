@@ -56,7 +56,7 @@ else
 
 	<table cellspacing="0">
 		<tr>
-			<th>PHP Version</th>
+			<th>PHP Versionnnn</th>
 			<?php if (version_compare(PHP_VERSION, '5.3.1', '>=')): ?>
 				<td class="pass"><?php echo PHP_VERSION ?></td>
 			<?php else: $failed = TRUE ?>
