@@ -1,5 +1,5 @@
 <?php echo $header; ?>
-<div class='user_name'><?php echo $profileValues['Name'] ?></div>
+<div class='user_name'><?php if(isset($profileValues['Name'])) echo $profileValues['Name']?></div>
 
 <div style='margin-top: 10px; font-family: Calibri;'>
 <div style="overflow: hidden">
@@ -10,9 +10,9 @@
 <div style="margin-left: 10px">
 <table>
 <tbody><tr><td width="150"><b>Возраст</b></td>
-<td><?php echo $profileValues['Age'] ?></td></tr>
+<td><?php if(isset($profileValues['Age'])) echo $profileValues['Age'] ?></td></tr>
 <tr><td><b>Город</b></td>
-<td><?php echo $profileValues['City'] ?></td></tr>
+<td><?php if(isset($profileValues['City'])) echo $profileValues['City'] ?></td></tr>
 </tbody></table>
 </div>
 </div>
@@ -74,9 +74,9 @@ endforeach;?>
 </div>
 
 <div id="editProfileDiv">
-     Имя <input type='text' id="userName" value="<?php echo $profileValues['Name']?>"/>
-     Дата рождения <input type='date' id="userBirthdate" value="<?php echo $profileValues['Birthdate']?>"/>
-     Город <input type='text' id="userCity" value="<?php echo $profileValues['City']?>"/>
+     Имя <input type='text' id="userName" value="<?php if(isset($profileValues['Name'])) echo $profileValues['Name']?>"/>
+     Дата рождения <input type='date' id="userBirthdate" value="<?php if(isset($profileValues['Birthdate'])) echo $profileValues['Birthdate']?>"/>
+     Город <input type='text' id="userCity" value="<?php if(isset($profileValues['City'])) echo $profileValues['City']?>"/>
 </div>
 
 <script type="text/javascript">
