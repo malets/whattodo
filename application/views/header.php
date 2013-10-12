@@ -7,11 +7,11 @@
     <link href="<?php echo URL::base(); ?>static/css/<?php echo $style; ?>.css" 
     rel="stylesheet" type="text/css" />
 <?php endforeach; ?>
-    
+  
 <?php foreach($js as $j): ?>
     <script src="<?php echo URL::base(); ?>static/js/<?php echo $j; ?>.js" 
     type="text/javascript"></script> 
-<?php endforeach; ?>   
+<?php endforeach; ?> 
 </head>
     <body>
 <div style='width: 100%; min-width: 1250px;'>

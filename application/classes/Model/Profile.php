@@ -6,6 +6,8 @@ class Model_Profile extends Model
     protected $_tableAchivments = 'achivments';
     protected $_tableCategories = 'categories';
     protected $_tableUserInfo = 'userInfo';
+    protected $_tableUserPhotos = 'userPhotos';
+
 
     public function get_achivments($user_id){
         $categoriesQ = DB::select()
@@ -58,6 +60,24 @@ class Model_Profile extends Model
         else
             return false;
         
+    }
+    
+    public function add_photo($userID, $Path){
+               $result = DB::insert($this->_tableUserPhotos, array('userID', 'Path'))
+                ->values(array($userID, $Path))
+                ->execute();
+               
+        return $result;
+    }
+    
+    public function get_user_photos($userID){
+        $photosQ = DB::select('Path')
+                ->from($this->_tableUserPhotos)
+                ->where('userID','=',$userID)
+                ->execute();
+        
+        $result = $photosQ->as_array();
+        return $result;
     }
 }
 ?>

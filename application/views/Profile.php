@@ -5,7 +5,8 @@
 <div style="overflow: hidden">
 <div style="width: 30%; float: left">
 <div style="text-align: center">
-<img width="150" src="/static/images/foto.jpg">
+<img width="150" src="<?php if(count($userPhotos) > 0) echo '/uploads/'.$userPhotos[0]['Path'];
+                               else echo '/static/images/Icon-user.png'?>" id='mainProfilePhoto'>
 </div>
 <div style="margin-left: 10px">
 <table>
@@ -47,6 +48,7 @@ endforeach;?>
     
 <a href="#" id='addGoal'>Добавить цель</a>
 <a href="#" id="editProfile">Редактировать профиль</a>
+<a href="#" id="editPhotoAlbom">Редактировать фотоальбом</a>
 </div>
 </div>
 
@@ -79,7 +81,84 @@ endforeach;?>
      Город <input type='text' id="userCity" value="<?php if(isset($profileValues['City'])) echo $profileValues['City']?>"/>
 </div>
 
+<div id="editPhotoAlbomDiv">
+    <form id="fotoForm" method='POST'>
+    Загрузить фото <input type='file' name="foto"/>
+    </form>
+</div>
+
 <script type="text/javascript">
+                    $("#mainProfilePhoto").click(function() {
+                        var fotoArray = [];
+                        <?php foreach($userPhotos as $foto): ?>
+                                fotoArray.push('/uploads/'+'<?php echo $foto['Path'] ?>'),
+                        <?php endforeach; ?> 
+                            $.fancybox(
+                                fotoArray                    
+                         /*
+                          * Как поставвить тайтл для фотки
+                          */
+                         /*  {
+                            'href' : 'http://farm5.static.flickr.com/4005/4213562882_851e92f326.jpg',
+                            'title' : 'Lorem ipsum dolor sit amet, consectetur adipiscing elit'
+                            }*/
+                            , {
+                            'padding' : 0,
+                            'transitionIn' : 'none',
+                            'transitionOut' : 'none',
+                            'type' : 'image',
+                            'changeFade' : 0
+                            });
+               });
+
+                $('#editPhotoAlbomDiv').dialog({
+                        title: 'Загрузка фотографий',
+			autoOpen: false,
+			width: 400,
+			buttons: [
+				{
+					text: "OK",
+					click: function() {
+                                                $('#fotoForm').submit();
+						$( this ).dialog( "close" );
+					}
+				},
+				{
+					text: "Отмена",
+					click: function() {
+						$( this ).dialog( "close" );
+					}
+				}
+			]
+                });
+
+                $('#fotoForm').submit(function() { 
+                        // submit the form 
+                        var options = { 
+                            target:        '#output2',   // target element(s) to be updated with server response 
+                           // beforeSubmit:  showRequest,  // pre-submit callback 
+                         //   success:       showResponse,  // post-submit callback 
+
+                            // other available options: 
+                            url:       '/edit_photo_albom/' // override for form's 'action' attribute 
+                            //type:      type        // 'get' or 'post', override for form's 'method' attribute 
+                            //dataType:  null        // 'xml', 'script', or 'json' (expected server response type) 
+                            //clearForm: true        // clear all form fields after successful submit 
+                            //resetForm: true        // reset the form after successful submit 
+
+                            // $.ajax options can be used here too, for example: 
+                            //timeout:   3000 
+                        }; 
+                        $(this).ajaxSubmit(options); 
+                        // return false to prevent normal browser submit and page navigation 
+                        return false;
+                        });
+                                             
+                $( "#editPhotoAlbom" ).click(function( event ) {
+			$( "#editPhotoAlbomDiv" ).dialog( "open" );
+			event.preventDefault();
+		});
+                
                 $("#editProfileDiv").dialog({
                         title: 'Редактирование профиля',
 			autoOpen: false,

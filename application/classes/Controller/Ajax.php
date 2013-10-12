@@ -57,5 +57,63 @@ class Controller_Ajax extends Controller_CommonAuthorized {
                     $this->template->answer = '{"success": false, "errorMsg": "Не удалось отредактировать профиль"}';
        
         }
+        
+        public function action_edit_photo_albom(){
+                if ($this->request->method() == Request::POST)
+                {
+                    if (isset($_FILES['foto']))
+                    {
+                        $filename = $this->save_image($_FILES['foto']);
+                        if(!$filename)
+                           $this->template->answer = '{"success": false, "errorMsg": "Не удалось загрузить файл на сервер"}'; 
+                        else
+                        {
+                           $DBresult = $this->save_image_to_DB($filename);
+                           if(!$DBresult)
+                               $this->template->answer = '{"success": false, "errorMsg": "Не удалось записать путь в базу"}'; 
+                           else
+                               $this->template->answer = '{"success": true}';
+                        }
+                    }
+                    else
+                        $this->template->answer = '{"success": false, "errorMsg": "Файл не был выбран"}';
+                }
+                else
+                    $this->template->answer = '{"success": false, "errorMsg": "Неверный тип отправки"}';
+                    
+        }
+        
+        protected function save_image($image){
+                if (
+                    ! Upload::valid($image) OR
+                    ! Upload::not_empty($image) OR
+                    ! Upload::type($image, array('jpg', 'jpeg', 'png', 'gif')))
+                {
+                    return FALSE;
+                }
+                $directory = DOCROOT.'uploads/';
+
+                if ($file = Upload::save($image, NULL, $directory))
+                {
+                    $filename = strtolower(Text::random('alnum', 20)).'.jpg';
+
+                    Image::factory($file)
+                        ->resize(200, 200, Image::AUTO)
+                        ->save($directory.$filename);
+
+                    // Delete the temporary file
+                    unlink($file);
+
+                    return $filename;
+                }
+
+                return FALSE;
+        }
+        
+        protected function save_image_to_DB($imgPath){
+                $userID = Auth::instance()->get_user()->id;
+                $result = Model::factory($this->profileModel)->add_photo($userID, $imgPath);
+                return $result;
+        }
 
 }
